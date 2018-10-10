@@ -7,6 +7,8 @@ struct marcacao2{
     int numMarcacao;
 };
 
+
+
 typedef struct endVetorPrincipal EndVetorPrincipal;
 struct endVetorPrincipal{
     int qntMarcacao;
@@ -214,4 +216,12 @@ void mergeSortStructEnd(EndVetorPrincipal *arr, int l, int r)
 
         mergeStructEnd(arr, l, m, r);
     }
+}
+
+int getGrau(Marcacao2 m){
+    return m.numMarcacao;
+}
+
+int getVertice(Marcacao2 m){
+    return m.numVertice;
 }

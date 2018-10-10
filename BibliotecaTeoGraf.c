@@ -9,11 +9,6 @@
 #include <stdbool.h>
 #define NUMERO_LINHA 1000
 
-#include <stdbool.h>
-#include <math.h>
-#include "Prim.h"
-#include "Dijkstra.h"
-
 typedef struct arvore Arvore;
 struct arvore{
     int nivel;
@@ -47,7 +42,7 @@ Vertice* geraListaAdjacencia(FILE *arq,char *Linha,char *result, int numVertices
         vetorGraus[i] = 0;
     }
 
-    if(numVertices > 10000000){
+    if(numVertices > 10500000){
         cha = "	";
     }else{
         cha = " ";
@@ -60,9 +55,8 @@ Vertice* geraListaAdjacencia(FILE *arq,char *Linha,char *result, int numVertices
     *gotNegativeEdges = false;
     while (!feof(arq))
     {
-
-        // LÃª uma linha (inclusive com o '\n')
-        result = fgets(Linha, NUMERO_LINHA-1, arq);  // o 'fgets' lÃª atÃ© NUMERO_LINHA caracteres ou atÃ© o '\n'
+        // Lê uma linha (inclusive com o '\n')
+        result = fgets(Linha, NUMERO_LINHA-1, arq);  // o 'fgets' lê até NUMERO_LINHA caracteres ou até o '\n'
         ultimoCaracter = strlen(result)-1;
         // Verificar e tirar o \n caso exista
         if(result[ultimoCaracter] == '\n'){
@@ -71,15 +65,12 @@ Vertice* geraListaAdjacencia(FILE *arq,char *Linha,char *result, int numVertices
 
         pri = atoi(strtok(result,cha));
         seg = atoi(strtok('\0',cha));
-
         peso = strtof(strtok('\0',cha),NULL);
-//        printf("Hello!\n");
-
         if(peso != 0)
          *isUnweighted = false;
         if(peso < 0)
          *gotNegativeEdges = true;
-//        printf("%d %d %.2f\n",pri,seg,peso);
+        //printf("%d %d %.2f\n",pri,seg,peso);
         if(pri > numVertices || seg > numVertices){
 //            printf("Erro! %s com numero incorreto\n", result);
             r++;
@@ -102,8 +93,8 @@ Vertice* geraListaAdjacencia(FILE *arq,char *Linha,char *result, int numVertices
 
         i++;
         (*numArestas)++;
-//        if(i == 11)
-//         break;
+        if(i == 10000001)
+         break;
     }
 //    printf("Chegou Aqui\n");
     printf("Linhas erradas: %d\n",r);
@@ -349,13 +340,13 @@ void milCiclosListaAdjacencia(Vertice *vetorVertice, int numVertices, char* nome
 
 // ----------------------------------------------------- FIM CICLO 1000X -----------------------------------------------------
 
-// ----------------------------------------------------- OUTRAS FUNÃ‡Ã•ES -----------------------------------------------------
+// ----------------------------------------------------- OUTRAS FUNÇÕES -----------------------------------------------------
 void componenteConexa(Vertice *Grafo, int tam){
     int i,h,qntTotalConexo;
     int j = 1;
     int numVerticeComponenteConexa = 0;
     printf("Iniciando Componente Conexa!\n");
-    // Inicializa o Vetor de MarcaÃ§Ã£o que contem o numero da marcaÃ§Ã£o e o numero do vertice
+    // Inicializa o Vetor de Marcação que contem o numero da marcação e o numero do vertice
     Marcacao2* vetorMarcacaoCC = (Marcacao2*) malloc(tam*sizeof(Marcacao2));
     for(i = 0; i < tam; i++){
         vetorMarcacaoCC[i].numMarcacao=0;
@@ -371,20 +362,20 @@ void componenteConexa(Vertice *Grafo, int tam){
         }
     }
     printf("Liberando Memoria!\n");
-    // Liberar Espaco do Grafo, pois sÃ³ utilizaremos o vetor de marcaÃ§Ã£o
+    // Liberar Espaco do Grafo, pois só utilizaremos o vetor de marcação
     for(i=0;i<tam;i++){
         lst_libera(Grafo[i].adjancencia);
     }
     free(Grafo);
 
     printf("1 MergeSort!\n");
-    // Ordena o vetor de marcaÃ§Ã£o em ordem crescente do numero da componente conexa
+    // Ordena o vetor de marcação em ordem crescente do numero da componente conexa
     mergeSortStruct(vetorMarcacaoCC,0,tam-1);
     qntTotalConexo = vetorMarcacaoCC[tam-1].numMarcacao;
 
     printf("Guardando Endereco!\n");
     // Cria um vetor para guardar a quantidade de elementos de cada componente conexa e o
-    // endereco do inicio da componente conexa no vetor de marcaÃ§ao
+    // endereco do inicio da componente conexa no vetor de marcaçao
     EndVetorPrincipal *vet = malloc(qntTotalConexo*sizeof(EndVetorPrincipal));
     for(i = 0; i < tam; i++){
         if(i == 0 || vetorMarcacaoCC[i].numMarcacao != vetorMarcacaoCC[i-1].numMarcacao){
@@ -464,6 +455,7 @@ char** pesquisadores(int tam){
     char *result;
     char **nomes;
 
+
     // Abre um arquivo TEXTO para LEITURA
     arq = fopen("rede_colaboracao_vertices.txt", "rt");
     if (arq == NULL)  // Se houve erro na abertura
@@ -476,8 +468,8 @@ char** pesquisadores(int tam){
 
     while (!feof(arq))
     {
-        // LÃª uma linha (inclusive com o '\n')
-        result = fgets(Linha, NUMERO_LINHA-1, arq);  // o 'fgets' lÃª atÃ© NUMERO_LINHA caracteres ou atÃ© o '\n'
+        // Lê uma linha (inclusive com o '\n')
+        result = fgets(Linha, NUMERO_LINHA-1, arq);  // o 'fgets' lê até NUMERO_LINHA caracteres ou até o '\n'
         ultimoCaracter = strlen(result)-1;
         // Verificar e tirar o \n caso exista
         if(result[ultimoCaracter] == '\n'){
@@ -502,106 +494,3 @@ char** pesquisadores(int tam){
     return nomes;
 
 }
-
-void redeColaboracao(){
-    FILE *arq;
-    char Linha[NUMERO_LINHA];
-    char *result;
-    int numVertices;
-    int numArestas = 0;
-    int *vetorGraus;
-    Vertice *vetorVertice;
-    int *vetorMarcacao;
-    char nome1[50];
-    char nome2[50];
-    long start, end;
-    prim *MST;
-    bool gotNegativeEdges;
-    bool isUnweighted;
-    dijkstra *SPT;
-    char** nomesPesquisadores;
-
-    printf("Escolha o inicio: ");
-    scanf(" %[^\n]",nome1);
-    printf("Escolha o final: ");
-    scanf(" %[^\n]",nome2);
-
-    printf("%s %s\n",nome1,nome2);
-//    printf("%d %d\n",strlen(nome1),strlen(nome2));
-    int tam = 722385;
-    int inicio;  // Dijktra = 2722
-    int fim;
-    nomesPesquisadores = pesquisadores(tam);
-    bool status1 = false;
-    bool status2 = false;
-    int e;
-    printf("%s\n",nomesPesquisadores[11386]);
-    for(e=1;e<=tam;e++){
-        if(strcmp(nome1,nomesPesquisadores[e])==0){
-            printf("Nome1: %s\n",nomesPesquisadores[e]);
-            inicio = e;
-            status1 = true;
-        }
-        else if(strcmp(nome2,nomesPesquisadores[e])==0){
-            printf("Nome2: %s\n",nomesPesquisadores[e]);
-            fim = e;
-            status2 = true;
-        }
-        if(status1 && status2){
-            break;
-        }
-    }
-
-    if(!status1 || !status2){
-        printf("Um dos nomes nao encontrado!");
-        return;
-    }
-//    fim = 11386;
-//    system("pause");
-
-    // Abre um arquivo TEXTO para LEITURA
-    arq = fopen("rede_colaboracao.txt", "rt");// ArqTeste   as_graph   dblp     live_journal
-    if (arq == NULL)  // Se houve erro na abertura
-    {
-        printf("Problemas na abertura do arquivo\n");
-        return;
-    }
-    // Le a primeira linha para descobrir a quantidade de vertices totais
-    result = fgets(Linha, NUMERO_LINHA-1, arq);
-    result[strlen(result)-1] = '\0';
-    numVertices = atoi(result); //transforma a string em inteiro
-
-    vetorGraus = (int*) malloc(numVertices*sizeof(int));
-    start = getMicrotime();
-    vetorVertice = geraListaAdjacencia(arq,Linha,result,numVertices, &numArestas, vetorGraus,&isUnweighted,&gotNegativeEdges);
-    end = getMicrotime();
-        //imprimeListaAdjacencia(vetorVertice, numVertices);
-    fclose(arq);
-//    system("pause");
-     MST = Prim(vetorVertice, numVertices, 1);
-     printf("\nMST\n");
-//     printMST(MST, numVertices);
-     gerarArquivoPrim(MST, numVertices);
-
-     if(!isUnweighted && !gotNegativeEdges)
-     {
-      printf("\nSPT\n");
-      SPT = Dijkstra(vetorVertice, numVertices, inicio);
-//      printDijkstra(SPT, numVertices);
-      gerarArquivoDijkstra(SPT, numVertices);
-//      excentricidadeDijkstra(SPT, numVertices);
-//      distanciaMediaDijkstra(SPT, numVertices);
-        printf("Distancia: %.2f\n",SPT->cost[fim-1]);
-//      encontrarCaminho(SPT->parent,numVertices,fim);
-        encontrarCaminhoPesquisador(SPT->parent,numVertices,fim,nomesPesquisadores);
-//      encontrarCaminhoTodosParesVertices(SPT->parent,numVertices);
-     }
-     else if(isUnweighted)
-      vetorMarcacao = BFSListaAdjacencia(vetorVertice, inicio, numVertices);
-
-    printf("Tempo para gerar o Grafo: %ld\n",end - start);
-
-//    pesquisadores();
-
-}
-

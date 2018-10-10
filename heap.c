@@ -1,9 +1,7 @@
 #include "heap.h"
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <float.h>
-
 /* Essa funcao efetua o merge entre dois heaps. Para tal, ela avalia apenas o primeiro elemento (a raiz) de cada heap. No final, aquele que tiver a maior chave se tornara filho (um subheap) do que tiver a menor chave. Em seguida, a funcao retorna um ponteiro para a raiz do novo heap.*/
 static node *
 merge (node *a, node *b)
@@ -104,6 +102,7 @@ merge (node *a, node *b)
 void
 heap_insert (Heap *heap,node *elem)
 { 
+  heap->array[(elem->vertexId - 1)] = elem;/*Array[i] contem o endereco de memoria do no recem inserido no heap. Assim sendo, quando criamos um novo elemento e o inserimos no heap, eh necessario saber qual o numero identificador(k) dele para que o k-esimo - 1 ponteiro do array aponte para o no que esta sendo inserido*/ 
   heap->size++;//incrementa o tamanho do heap
   elem->prev = NULL;
   elem->next = NULL;
@@ -317,7 +316,7 @@ heap_decrease (Heap *heap, int destinationVertexId, float newValue)
   if (elem->prev != NULL)//Checa se o elemento eh a raiz, unico elemento que nao possui anterior
   {
    detach_subheap (elem);//o subheap encabecado pelo elemento cuja chave foi alterada e primeiramente retirado do heap
-   heap->root = merge (heap->root, elem);//em seguida reorganiza o heap pra achar a nova posicao do subheap
+   heap->root = merge (heap->root, elem);//em seguida reorganiza o heap pra achar a nova posicao do subheap e consequentemente a nova raiz
   }
 }
 
@@ -326,15 +325,10 @@ heap_init (Heap *heap,int V)
 {
   heap->size = 0;
   heap->array = (node**)malloc(V * sizeof(node*));/*Esse vetor guarda a posicao de cada vertice no heap.Isso eh importante para quando modificarmos um elemento*/
-  node* aux;/*esse ponteiro guarda temporariamente posicao de memoria do novo criado pelo malloc(sizeof(node)).Depois heap->array[i] fara esse papel*/
   heap->root = NULL;//inicializa o ponteiro raiz com NULL
   for(int i = 0;i<V;i++)
   {
-   aux = (node*)malloc(sizeof(node));
-   aux->currentCostToInclude = FLT_MAX;//inicializa todas as distancias com infinito
-   aux->vertexId = i+1;   
-   heap->array[i] = aux;//Array[i] contem o endereco de memoria do no recem criado
-   heap_insert(heap, aux);//insere o elemento criado no heap    
+   heap->array[i] = NULL;/*Array[i] contem o endereco de memoria de todos os nos que ja foram inseridos no heap. Ao inicializarmos o heap nenhum elemento foi adcionado. Logo todos os ponteiros sao NULL*/    
   }
 }
 
