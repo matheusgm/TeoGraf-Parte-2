@@ -93,7 +93,7 @@ Vertice* geraListaAdjacencia(FILE *arq,char *Linha,char *result, int numVertices
 
         i++;
         (*numArestas)++;
-        if(i == 10000001)
+        if(i == 2272543)
          break;
     }
 //    printf("Chegou Aqui\n");
@@ -454,7 +454,7 @@ char** pesquisadores(int tam){
     char Linha[NUMERO_LINHA];
     char *result;
     char **nomes;
-
+    int i = 0;  
 
     // Abre um arquivo TEXTO para LEITURA
     arq = fopen("rede_colaboracao_vertices.txt", "rt");
@@ -464,7 +464,7 @@ char** pesquisadores(int tam){
         return 0;
     }
 
-    nomes = (char**) malloc((tam+1)*sizeof(char*));
+    nomes = (char**) malloc((tam)*sizeof(char*));
 
     while (!feof(arq))
     {
@@ -483,8 +483,10 @@ char** pesquisadores(int tam){
         char *n = (char*) malloc((l+1)*sizeof(char));
         strcpy(n,nome);
         nome[l-1] = '\0';
-        nomes[indice] = n;
-
+        nomes[indice - 1] = n;
+        i++;
+        if(i == 722384)
+         break;
     }
 
 //    int j;

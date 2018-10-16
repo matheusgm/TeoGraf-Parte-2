@@ -35,6 +35,7 @@ void distanciaMediaDijkstra(Vertice* Grafo, int tam){
 
 void encontrarCaminho(int *vetPai, int tam, int s){
     int x = vetPai[s-1];
+    printf("\nPai do Ratton:%d\n",x);
     Pilha *pilha = pilha_cria();
     pilha_push(pilha, s);
     while(x!=-1){
@@ -54,6 +55,7 @@ void encontrarCaminho(int *vetPai, int tam, int s){
 
 void encontrarCaminhoPesquisador(int *vetPai, int tam, int s, char** nomePesquisador){
     int x = vetPai[s-1];
+    printf("\nPai do Ratton:%d\n",x);
     Pilha *pilha = pilha_cria();
     pilha_push(pilha, s);
     while(x!=-1){
@@ -64,9 +66,9 @@ void encontrarCaminhoPesquisador(int *vetPai, int tam, int s, char** nomePesquis
     while(!pilha_vazia(pilha)){
         int num = pilha_pop(pilha);
         if(num != s){
-            printf("%s -> ",nomePesquisador[num]);
+            printf("%s -> ",nomePesquisador[num-1]);
         }else{
-            printf("%s\n",nomePesquisador[num]);
+            printf("%s\n",nomePesquisador[num-1]);
         }
     }
 }

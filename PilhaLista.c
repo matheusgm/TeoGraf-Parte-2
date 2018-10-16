@@ -9,7 +9,7 @@ struct no {
 
 typedef struct pilha Pilha;
 struct pilha{
-    No* prim;
+    No* topo;
 };
 
 Pilha* pilha_cria(){
@@ -17,7 +17,7 @@ Pilha* pilha_cria(){
     if (p==NULL) {
        exit(1);
     }
-    p->prim = NULL;
+    p->topo = NULL;
     return p;
 }
 
@@ -27,12 +27,12 @@ void pilha_push(Pilha* p, int v){
         exit(1);
     }
     n->info = v;
-    n->prox = p->prim;
-    p->prim = n;
+    n->prox = p->topo;
+    p->topo = n;
 }
 
 int pilha_vazia(Pilha* p){
-    if(p->prim == NULL){
+    if(p->topo == NULL){
         return 1;
     }
     return 0;
@@ -44,15 +44,15 @@ int pilha_pop(Pilha* p){
     if (pilha_vazia(p)) {
         exit(1); /* aborta programa */
     }
-    t = p->prim;
+    t = p->topo;
     v = t->info;
-    p->prim = t->prox;
+    p->topo = t->prox;
     free(t);
     return v;
 }
 
 void pilha_libera(Pilha* p){
-    No *t, *q = p->prim;
+    No *t, *q = p->topo;
     while (q!=NULL)
     {
         t = q->prox;

@@ -4,7 +4,7 @@
 typedef struct arvore Arvore;
 typedef struct marcacao2 Marcacao2;
 typedef struct endVetorPrincipal EndVetorPrincipal;
-
+char** pesquisadores(int tam);
 // ----------------------------------------------------- INICIO DE GERAR GRAFOS -----------------------------------------------------
 Vertice* geraListaAdjacencia(FILE *arq,char *Linha,char *result, int numVertices, int *numArestas, int *vetorGraus,bool*isUnweighted,bool*gotNegativeEdges);
 // ----------------------------------------------------- FIM DE GERAR GRAFOS -----------------------------------------------------

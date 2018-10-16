@@ -15,7 +15,7 @@
 
 //double time_diff(struct timeval x , struct timeval y);
 #define NUMERO_LINHA 1000
-
+void redeColaboracao();
 
 int main()
 {
@@ -40,6 +40,7 @@ int main()
     srand(time(NULL));//gera a semente da funcao rand
     //struct timespec comeco, fim;
     // Abre um arquivo TEXTO para LEITURA
+/*
     arq = fopen("grafo_1.txt", "rt");
     if (arq == NULL)  // Se houve erro na abertura
     {
@@ -82,7 +83,7 @@ int main()
       vetorMarcacao = BFSListaAdjacencia(vetorVertice, 1, numVertices);
    free(SPT->cost);
    free(SPT->parent);
-
+*/
    redeColaboracao(); // Edsger W. Dijkstra - Daniel R. Figueiredo
    /*for(int i = 0; i<10; i++)
 
@@ -169,8 +170,8 @@ void redeColaboracao(){
     int *vetorGraus;
     Vertice *vetorVertice;
     int *vetorMarcacao;
-    char nome1[50];
-    char nome2[50];
+    char nome1[50] = "Edsger W. Dijkstra\0";
+    char nome2[50] = "Alan M. Turing\0";
     long start, end;
     prim *MST;
     bool gotNegativeEdges;
@@ -179,37 +180,40 @@ void redeColaboracao(){
     char** nomesPesquisadores;
     GrauStruct* grausMST;
 
-    printf("Escolha o inicio: ");
+    /*printf("Escolha o inicio: ");
     scanf(" %[^\n]",nome1);
     printf("Escolha o final: ");
     scanf(" %[^\n]",nome2);
-
+*/
     printf("%s %s\n",nome1,nome2);
 //    printf("%d %d\n",strlen(nome1),strlen(nome2));
     int tam = 722385;
     int inicio;  // Dijktra = 2722
     int fim;
     nomesPesquisadores = pesquisadores(tam);
+    printf("\nOK1\n");
     bool status1 = false;
     bool status2 = false;
     int e;
 //    printf("%s\n",nomesPesquisadores[11386]);
-    for(e=1;e<=tam;e++){
+    for(e=0;e<tam;e++){
         if(strcmp(nome1,nomesPesquisadores[e])==0){
             printf("Nome1: %s\n",nomesPesquisadores[e]);
-            inicio = e;
+            inicio = e+1;
             status1 = true;GrauStruct* grausMST;
         }
         else if(strcmp(nome2,nomesPesquisadores[e])==0){
             printf("Nome2: %s\n",nomesPesquisadores[e]);
-            fim = e;
+            fim = e+1;
             status2 = true;
         }
         if(status1 && status2){
             break;
-        }
+        } 
     }
-
+    printf("\nDijksta:%d\n",inicio);
+    printf("\nAlan M. Turing:%d\n",fim);
+    printf("\nOK2\n"); 
     if(!status1 || !status2){
         printf("Um dos nomes nao encontrado!");
         return;
@@ -236,7 +240,7 @@ void redeColaboracao(){
         //imprimeListaAdjacencia(vetorVertice, numVertices);
     fclose(arq);
 //    system("pause");
-     MST = Prim(vetorVertice, numVertices, 1);
+     MST = Prim(vetorVertice, numVertices, 343930);
      printf("\nMST\n");
 //     printMST(MST, numVertices);
      gerarArquivoPrim(MST, numVertices);
@@ -267,9 +271,9 @@ void redeColaboracao(){
       gerarArquivoDijkstra(SPT, numVertices);
 //      excentricidadeDijkstra(SPT, numVertices);
 //      distanciaMediaDijkstra(SPT, numVertices);
-        printf("Distancia: %.2f\n",SPT->cost[fim-1]);
+        printf("Distancia: %.2f\n",SPT->cost[343929]);
 //      encontrarCaminho(SPT->parent,numVertices,fim);
-        encontrarCaminhoPesquisador(SPT->parent,numVertices,fim,nomesPesquisadores);
+        encontrarCaminhoPesquisador(SPT->parent,numVertices,343930,nomesPesquisadores);
 //      encontrarCaminhoTodosParesVertices(SPT->parent,numVertices);
      }
      else if(isUnweighted)

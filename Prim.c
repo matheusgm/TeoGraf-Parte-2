@@ -28,7 +28,7 @@ void gerarArquivoPrim(prim *d, int tam){
         exit(1);
     }
     for(i=0;i<tam;i++){
-     fprintf(arqSaida,"%d %d %.2f\r\n", d->parent[i], i+1,d->cost[i]);
+     fprintf(arqSaida,"%d %d %.2f\r\n", d->parent[i],i+1,d->cost[i]);
     }
     fclose(arqSaida);
 }
@@ -62,7 +62,7 @@ int* vizinhosMST(prim *d, int tam, int verticeNome, int *j){
 void imprimeVizinhosMST(int *vet, int tam, char** nomes){
     int i;
     for(i=0;i<tam;i++){
-        printf("Vizinho %d: %d %s\n",i+1,vet[i],nomes[vet[i]]);
+        printf("Vizinho %d: %d %s\n",i+1,vet[i],nomes[vet[i]-1]);
     }
 }
 
@@ -132,6 +132,7 @@ prim* Prim(Vertice *Grafo, int V, int start) //V eh o numero de vertices e start
        aux = (node*)malloc(sizeof(node));//Se nao foi colocado no heap entao o no eh criado
        aux->vertexId = v;//O id do novo vertice a ser incluido eh o proprio "v"
        aux->currentCostToInclude = weight;/*Inicializa a distancia ate ele na primeira vez que foi encontrado com o peso da aresta*/
+       d.parent[v-1] = u;
        heap_insert(&h, aux);//insere o elemento criado no heap
       }
       else if( (mstIncluded[v-1] == false) && (h.array[v-1]->currentCostToInclude > weight) )/*Checa se o vertice ja foi incluido ou nao na MST e se o novo custo pra incluir eh menor que o atual*/

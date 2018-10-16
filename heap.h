@@ -1,5 +1,6 @@
 #ifndef _HEAP_H
 #define _HEAP_H
+void encontrarCaminhoPesquisador(int *vetPai, int tam, int s, char** nomePesquisador);
 typedef struct node
 {
  float currentCostToInclude;//Contem o custo atual para incluir na MST
